@@ -1,8 +1,13 @@
 import express, { Application } from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 
 const app: Application = express();
-const port = 3001;
+const port = process.env.API_PORT || 3002;
+
+dotenv.config(); // Load environment variables from .env file
+
+const API = process.env.LINEMAN_API_GATEWAY;
 
 app.use(
   cors({
