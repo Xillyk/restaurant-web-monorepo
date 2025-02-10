@@ -43,3 +43,13 @@ export interface IFullMenu {
     }[];
   }[];
 }
+
+export interface IRestaurantInfoAndMenus {
+  info: IRestaurantInfo;
+  menus: IShortMenu[];
+}
+
+export interface IRestaurantInfoAndMenusPagination
+  extends IRestaurantInfoAndMenus {
+  hasMore: boolean;
+}
