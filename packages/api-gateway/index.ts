@@ -2,12 +2,12 @@ import express, { Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import restaurantRoute from "./src/routes/restaurant";
+
 const app: Application = express();
 const port = process.env.API_PORT || 3002;
 
-dotenv.config(); // Load environment variables from .env file
-
-const API = process.env.LINEMAN_API_GATEWAY;
+dotenv.config();
 
 app.use(
   cors({
@@ -16,6 +16,8 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/restaurant", restaurantRoute);
 
 app.get("/", (req, res) =>
   res.send({ data: "LINE MAN Wongnai Frontend Assignment" })
