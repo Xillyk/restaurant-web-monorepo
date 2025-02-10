@@ -1,19 +1,24 @@
 import { Request, Response, Router } from "express";
-import pLimit from "p-limit";
 
-import { IRestaurantInfo } from "../../../types/index";
-import { loadPLimit } from "../services/loadLimit";
+import { fetchAllMenus } from "../controllers/restaurantController.ts";
 
-const router = Router();
+import {
+  IRestaurantInfo,
+  IRestaurantInfoAndMenusPagination,
+} from "../../../types/index.ts";
 
 const API = process.env.LINEMAN_API_GATEWAY;
 
-router.get("/info/:id/:size", async (req: Request, res: Response) => {
-  const restaurantId = req.params.id;
-  const menusSize = req.params.size;
-  console.log("🚀 ~ router.post ~ menusSize:", menusSize);
+const router = Router();
 
-  // console.log("🚀 ~ router.get ~ param:", restaurantId);
+router.get("/info/:id", async (req: Request, res: Response) => {
+  const restaurantId = req.params.id;
+
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
 
   if (restaurantId) {
     try {
@@ -21,24 +26,23 @@ router.get("/info/:id/:size", async (req: Request, res: Response) => {
       const restaurantResponse = await fetch(
         `${API}/restaurants/${restaurantId}.json`
       );
-      const restaurantInfo = await restaurantResponse.json();
-      console.log("🚀 ~ router.get ~ restaurantInfo:", restaurantInfo);
+      const restaurantInfo =
+        (await restaurantResponse.json()) as IRestaurantInfo;
 
       // * 2 fetch menus
+      const slicedMenus = restaurantInfo.menus.slice(startIndex, endIndex);
 
-      // const menusResponse = await fetch(
-      //   `${API}/restaurants/${restaurantId}/menus/:menuName/short.json`
-      // );
+      const data = await fetchAllMenus(restaurantId, slicedMenus, limit);
 
-      // Example usage
-      // const menuIds = Array.from({ length: 120 }, (_, i) => `id-${i + 1}`); // Example 120 IDs
+      const responseData: IRestaurantInfoAndMenusPagination = {
+        info: restaurantInfo,
+        menus: data,
+        hasMore: endIndex < restaurantInfo.menus.length,
+      };
 
-      // fetchAllItems(ids, 10)
-      //   .then((data) => console.log("Fetched data:", data))
-      //   .catch((error) => console.error("Error fetching data:", error));
-
-      //
-      res.status(200).send({ restaurantInfo });
+      res.status(200).send({
+        ...responseData,
+      });
     } catch (error) {
       res.status(500).send({ message: "target api response with 500 status" });
     }
@@ -46,40 +50,5 @@ router.get("/info/:id/:size", async (req: Request, res: Response) => {
     res.status(400).send({ message: "restaurantId is required" });
   }
 });
-
-const fetchMenu = async (
-  restaurantId: string,
-  menuId: string
-): Promise<any> => {
-  try {
-    const response = await fetch(
-      `${API}/restaurants/:restaurantId/menus/:menuName/short.json`
-    );
-    console.log("🚀 ~ fetchItem ~ response:", response);
-
-    // if (!response.ok) throw new Error(`Failed to fetch ID: ${id}`);
-    // return response.json();
-  } catch (error) {
-    console.error(error);
-    return null; // Handle failures gracefully
-  }
-};
-
-const fetchAllItems = async (
-  restaurantId: string,
-  menuIds: string[],
-  concurrencyLimit: number = 10
-) => {
-  const pLimit = await loadPLimit();
-  const limit = pLimit(concurrencyLimit);
-
-  const fetchPromises = menuIds.map((menuId) =>
-    limit(() => fetchMenu(restaurantId, menuId))
-  );
-
-  const results = await Promise.all(fetchPromises);
-
-  return results.filter((result) => result !== null); // Filter out failed fetches
-};
 
 export default router;
