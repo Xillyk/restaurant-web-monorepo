@@ -1,12 +1,15 @@
 {
-	"compilerOptions": {
-		"target": "es6",
-		"module": "commonjs",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"sourceMap": true,
-		"outDir": "dist"
-	}
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
 }

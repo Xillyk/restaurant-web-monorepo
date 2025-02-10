@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import restaurantRoute from "./src/routes/restaurant";
+import restaurantRoute from "./src/routes/restaurant.ts";
 
 const app: Application = express();
 const port = process.env.API_PORT || 3002;
