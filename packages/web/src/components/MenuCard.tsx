@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IShortMenu } from "../../../types";
 import { useRestaurant } from "@/contexts/RestaurantContext";
 import { useBottomSheet } from "@/contexts/BottomSheetContext";
+
+import NoImage from "@/assets/no-image.jpg";
 
 interface MenuCardProps {
   menu: IShortMenu;
@@ -10,6 +12,11 @@ interface MenuCardProps {
 const MenuCard = ({ menu }: MenuCardProps) => {
   const { setSelectedMenuId } = useRestaurant();
   const { setIsOpenBottomSheet } = useBottomSheet();
+
+  const imageSrc = useMemo(
+    () => menu.thumbnailImage ?? NoImage,
+    [menu.thumbnailImage]
+  );
 
   const handleClickMenu = () => {
     setSelectedMenuId(menu.id);
@@ -22,13 +29,9 @@ const MenuCard = ({ menu }: MenuCardProps) => {
       onClick={() => handleClickMenu()}
     >
       <img
-        src={menu.thumbnailImage}
+        src={imageSrc}
         alt={menu.name}
         className="size-[80px] md:size-[100px] 2xl:size-[120px] rounded-2xl"
-        onError={(e) => {
-          (e.target as HTMLImageElement).onerror = null;
-          (e.target as HTMLImageElement).src = "/assets/no-image.png";
-        }}
       />
 
       <div className="flex flex-col">
