@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-import { useRestaurant } from "./contexts/RestaurantContext";
+import { useRestaurant } from "@/contexts/RestaurantContext";
 
 const restaurantIds = ["567051", "227018"];
 
-const App = () => {
+const AllRestaurants = () => {
   const navigate = useNavigate();
   const { setRestaurantInfo } = useRestaurant();
 
@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <>
-      <p>restaurants list</p>
+      <h1>restaurants list</h1>
 
       {restaurantIds.map((id) => (
         <div
@@ -30,4 +30,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AllRestaurants;

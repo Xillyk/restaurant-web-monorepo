@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import { RestaurantProvider } from "./contexts/RestaurantContext";
 import { BottomSheetProvider } from "./contexts/BottomSheetContext";
 
-import App from "./App";
+import AllRestaurants from "./pages/AllRestaurants";
 import Restaurant from "./pages/Restaurant";
 
 import "./index.css";
@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
     <BottomSheetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}></Route>
+          <Route path="/" element={<AllRestaurants />}></Route>
           <Route path="/restaurant">
             <Route path=":restaurantId" element={<Restaurant />} />
           </Route>
