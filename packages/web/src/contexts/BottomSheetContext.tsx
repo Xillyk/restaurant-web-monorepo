@@ -14,7 +14,6 @@ export const BottomSheetProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isOpenBottomSheet, setIsOpenBottomSheet] = useState<boolean>(false);
-  console.log("🚀 ~ isOpenBottomSheet:", isOpenBottomSheet);
 
   return (
     <BottomSheetContext.Provider
