@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router";
-import { useRestaurant } from "./contexts/RestaurantContext";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
+
+import { useRestaurant } from "./contexts/RestaurantContext";
 
 const restaurantIds = ["567051", "227018"];
 

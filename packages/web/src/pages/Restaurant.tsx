@@ -1,9 +1,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IShortMenu } from "../../../types";
-import { useRestaurant } from "@/contexts/RestaurantContext";
-import { getRestaurantInfoAndMenus } from "@/services/restaurantService";
-import { isRestaurantOpen } from "@/utils/timeCheck";
 import { useParams } from "react-router";
+
+import MenuList from "@/components/MenuList";
+import OpenStatus from "@/components/OpenStatus";
+
+import { IShortMenu } from "../../../types";
+
+import { useRestaurant } from "@/contexts/RestaurantContext";
+
+import { getRestaurantInfoAndMenus } from "@/services/restaurantService";
+
+import { isRestaurantOpen } from "@/utils/timeCheck";
 
 const Restaurant = () => {
   const { restaurantId } = useParams();
@@ -64,7 +71,7 @@ const Restaurant = () => {
             className="w-full h-[30%] xl:h-[40%] 2xl:h-[40%]"
           />
 
-          <div className="flex flex-col items-center justify-center mt-6 md:mt-6">
+          <div className="flex flex-col items-center justify-center mt-6 md:mt-6 mx-4">
             <div className="flex items-center gap-4">
               {/* name */}
               <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">
@@ -72,49 +79,18 @@ const Restaurant = () => {
               </h1>
 
               {/* status */}
-              <div
-                className={`${
-                  isOpen ? "bg-green-500" : "bg-red-500"
-                } w-fit px-6 py-1 rounded-xl text-white text-sm md:text-lg lg:text-lg xl:text-lg`}
-              >
-                <span>{isOpen ? "เปิด" : "ปิด"}</span>
-              </div>
+              <OpenStatus isOpen={isOpen} />
             </div>
 
             {/* menu list */}
             <div className="mt-8">
-              {menus.map((menu, index) => (
-                <div
-                  key={index}
-                  className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-full flex flex-col gap-4 cursor-pointer"
-                >
-                  <div className="flex gap-4">
-                    <div>
-                      <img
-                        src={menu.thumbnailImage}
-                        alt={menu.name}
-                        className="size-[80px] md:size-[100px] 2xl:size-[120px] rounded-2xl"
-                      />
-                    </div>
-
-                    <div className="flex flex-col">
-                      <span className="text-md md:text-xl font-semibold">
-                        {menu.name}
-                      </span>
-                      <span className="text-sm md:text-lg font-medium">{`${menu.fullPrice} บาท`}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+              <MenuList menuList={menus} />
             </div>
 
             {isLoading && <p>loading more</p>}
 
-            <div
-              ref={observerBottomRef}
-              // style={{ height: "20px", background: "transparent" }}
-              className="h-[20px]"
-            />
+            {/* bottom observer */}
+            <div ref={observerBottomRef} className="h-[20px]" />
           </div>
         </>
       ) : (
