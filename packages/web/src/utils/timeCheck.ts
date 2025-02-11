@@ -1,7 +1,7 @@
 import { IRestaurantInfo } from "../../../types";
 
 // is in open time range
-export const isRestaurantOpen = (
+export const checkIsRestaurantOpen = (
   activeTimePeriod: IRestaurantInfo["activeTimePeriod"]
 ) => {
   const now = new Date();
