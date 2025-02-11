@@ -1,13 +1,26 @@
 import React from "react";
 import { IShortMenu } from "../../../types";
+import { useRestaurant } from "@/contexts/RestaurantContext";
+import { useBottomSheet } from "@/contexts/BottomSheetContext";
 
 interface MenuCardProps {
   menu: IShortMenu;
 }
 
 const MenuCard = ({ menu }: MenuCardProps) => {
+  const { setSelectedMenuId } = useRestaurant();
+  const { setIsOpenBottomSheet } = useBottomSheet();
+
+  const handleClickMenu = () => {
+    setSelectedMenuId(menu.id);
+    setIsOpenBottomSheet(true);
+  };
+
   return (
-    <div className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-full flex gap-4 cursor-pointer">
+    <div
+      className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-full flex gap-4 cursor-pointer"
+      onClick={() => handleClickMenu()}
+    >
       <img
         src={menu.thumbnailImage}
         alt={menu.name}
