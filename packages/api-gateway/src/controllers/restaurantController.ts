@@ -35,7 +35,6 @@ export const fetchAllMenus = async (
   );
 
   const results = await Promise.all(fetchPromises);
-  console.log("🚀 ~ results:", results);
 
   return results.filter((result) => result !== null); // Filter out failed fetches
 };
