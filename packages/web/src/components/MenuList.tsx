@@ -2,11 +2,11 @@ import React from "react";
 import { IShortMenu } from "../../../types";
 import MenuCard from "./MenuCard";
 
-interface IMenuList {
+interface MenuListProps {
   menuList: IShortMenu[];
 }
 
-const MenuList = ({ menuList }: IMenuList) => {
+const MenuList = ({ menuList }: MenuListProps) => {
   return (
     <div>
       {menuList.map((menu, index) => (

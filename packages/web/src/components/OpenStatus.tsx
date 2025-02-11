@@ -1,10 +1,10 @@
 import React from "react";
 
-interface IOpenStatus {
+interface OpenStatusProps {
   isOpen: boolean;
 }
 
-const OpenStatus = ({ isOpen }: IOpenStatus) => {
+const OpenStatus = ({ isOpen }: OpenStatusProps) => {
   return (
     <div
       className={`${

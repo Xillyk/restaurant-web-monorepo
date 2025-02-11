@@ -1,11 +1,11 @@
 import React from "react";
 import { IShortMenu } from "../../../types";
 
-interface IMenuCard {
+interface MenuCardProps {
   menu: IShortMenu;
 }
 
-const MenuCard = ({ menu }: IMenuCard) => {
+const MenuCard = ({ menu }: MenuCardProps) => {
   return (
     <div className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-full flex gap-4 cursor-pointer">
       <img
