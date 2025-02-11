@@ -1,4 +1,9 @@
-import { IRestaurantInfoAndMenusPagination } from "../../../types";
+import {
+  IFullMenu,
+  IRestaurantInfo,
+  IRestaurantInfoAndMenusPagination,
+  IShortMenu,
+} from "../../../types";
 
 const API_GATEWAY_ENDPOINT = import.meta.env.VITE_API_GATEWAY_ENDPOINT;
 // get restaurant info
@@ -15,5 +20,21 @@ export const getRestaurantInfoAndMenus = async (
     return data;
   } catch (error) {
     console.log("🚀 ~ getRestaurantInfo ~ error:", error);
+  }
+};
+
+// get full menu
+export const getFullMenu = async (
+  restaurantId: IRestaurantInfo["id"],
+  menuId: IShortMenu["id"]
+) => {
+  try {
+    const response = await fetch(
+      `${API_GATEWAY_ENDPOINT}/restaurant/full-menu?restaurantId=${restaurantId}&menuId=${menuId}`
+    );
+    const data: IFullMenu = await response.json();
+    return data;
+  } catch (error) {
+    console.log("🚀 ~ getFullMenu ~ error:", error);
   }
 };
