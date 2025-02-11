@@ -3,6 +3,7 @@ import { Request, Response, Router } from "express";
 import { fetchAllMenus } from "../controllers/restaurantController.ts";
 
 import {
+  IFullMenu,
   IRestaurantInfo,
   IRestaurantInfoAndMenusPagination,
 } from "../../../types/index.ts";
@@ -48,6 +49,29 @@ router.get("/info/:id", async (req: Request, res: Response) => {
     }
   } else {
     res.status(400).send({ message: "restaurantId is required" });
+  }
+});
+
+router.get("/full-menu", async (req: Request, res: Response) => {
+  const restaurantId = parseInt(req.query.restaurantId as string);
+  const menuId = req.query.menuId as string;
+
+  if (restaurantId && menuId) {
+    try {
+      // * 1 fetch restaurant info
+      const menuResponse = await fetch(
+        `${API}/restaurants/${restaurantId}/menus/${menuId}/full.json`
+      );
+      const menuData = (await menuResponse.json()) as IFullMenu;
+
+      res.status(200).send({
+        ...menuData,
+      });
+    } catch (error) {
+      res.status(500).send({ message: "target api response with 500 status" });
+    }
+  } else {
+    res.status(400).send({ message: "restaurantId | menuId is required" });
   }
 });
 
