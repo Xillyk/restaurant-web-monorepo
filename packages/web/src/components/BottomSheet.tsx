@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+import BottomSheetSkeleton from "./skeleton/BottomSheetSkeleton";
+import CheckBox from "./common/CheckBox";
+
 import { useRestaurant } from "@/contexts/RestaurantContext";
 
 import { getFullMenu } from "@/services/restaurantService";
@@ -7,6 +10,8 @@ import { getFullMenu } from "@/services/restaurantService";
 import { IFullMenu, IRestaurantInfo, IShortMenu } from "../../../types";
 
 import { IoMdClose } from "react-icons/io";
+import { IoBagCheckOutline } from "react-icons/io5";
+import TextInput from "./common/TextInput";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -74,19 +79,7 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
         }`}
       >
         {isLoading ? (
-          <div className="h-[500px] bg-gray-300 animate-pulse m-4 flex flex-col gap-2">
-            {/* name skeleton */}
-            <div className="h-10 bg-gray-400 m-2 rounded-xl" />
-
-            {/* image skeleton */}
-            <div className="h-[300px] bg-gray-400 m-2 rounded-xl" />
-
-            {/* text skeletion */}
-            <div className="h-6 bg-gray-400 m-2 rounded-xl" />
-            <div className="h-6 bg-gray-400 m-2 rounded-xl" />
-            <div className="h-6 bg-gray-400 m-2 rounded-xl" />
-            <div className="h-6 bg-gray-400 m-2 rounded-xl" />
-          </div>
+          <BottomSheetSkeleton />
         ) : (
           <>
             {menuInfo ? (
@@ -114,16 +107,76 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                   />
                 </div>
 
-                <div className="min-h-[300px]">
-                  {/* price */}
-                  <span className="text-3xl">
-                    ราคา {menuInfo.fullPrice} บาท
-                  </span>
+                <div className="h-max mx-4 mt-2">
+                  {/* header */}
+                  <div className="flex justify-between">
+                    {/* price */}
+                    <span className="text-3xl">
+                      ราคา {menuInfo.fullPrice} บาท
+                    </span>
+
+                    {/* total sell */}
+                    {menuInfo.sold > 0 && (
+                      <div className="flex items-center gap-1">
+                        <IoBagCheckOutline size={20} />
+
+                        <span>{menuInfo.sold} คำสั่งซื้อ</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* divider */}
+                  <div className="border-t-1 border-gray-200 w-full my-2" />
+
+                  {menuInfo.options.length > 0 ? (
+                    <div className="mt-2">
+                      <span className="text-gray-400 text-lg">
+                        ตัวเลือกเพิ่มเติม
+                      </span>
+                      {menuInfo.options.map((option, optionIndex) => (
+                        <div key={optionIndex} className="mt-2">
+                          <span className="text-lg">{option.label}</span>
+
+                          {/* choices */}
+                          {option.choices.map((choice, choiceIndex) => (
+                            <div
+                              className="flex items-center gap-2 mt-1"
+                              key={choiceIndex}
+                            >
+                              <CheckBox />
+                              <span className="w-[150px] text-md">
+                                {choice.label}
+                              </span>
+                              <span className="text-red-500 text-sm">
+                                (หมด)
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-gray-400 text-sm">
+                      ไม่มีตัวเลือกเพิ่มเติม
+                    </span>
+                  )}
+
+                  {/* comment */}
+                  <div className="mt-8">
+                    <span className="text-lg text-gray-700">
+                      หมายเหตุเพิ่มเติม
+                    </span>
+                    <div className="mt-1">
+                      <TextInput placeHolder="ตัวอย่าง: ไม่ใส่ผัก" />
+                    </div>
+                  </div>
 
                   {/* add to cart */}
-                  <button className="bg-green-500 py-2 px-4 rounded-lg text-white hover:shadow-lg">
-                    เพิ่มลงตระกร้า
-                  </button>
+                  <div className="flex items-center justify-center mb-8 mt-6">
+                    <button className="bg-green-500 py-2 px-4 rounded-lg text-white hover:shadow-lg">
+                      เพิ่มลงตระกร้า
+                    </button>
+                  </div>
                 </div>
               </>
             ) : (
