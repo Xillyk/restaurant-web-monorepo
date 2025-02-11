@@ -11,7 +11,7 @@ const App = () => {
 
   useEffect(() => {
     setRestaurantInfo(undefined);
-  }, []);
+  }, [setRestaurantInfo]);
 
   return (
     <>
