@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router";
 import MenuList from "@/components/MenuList";
 import OpenStatus from "@/components/OpenStatus";
 import BottomSheet from "@/components/BottomSheet";
+import RestaurantSkeleton from "@/components/skeleton/RestaurantSkeleton";
+import MenuLoadingSkeleton from "@/components/skeleton/MenuLoadingSkeleton";
 
 import { FaArrowLeft } from "react-icons/fa6";
 
@@ -118,24 +120,15 @@ const Restaurant = () => {
               onClose={() => setIsOpenBottomSheet(false)}
             />
 
-            {isLoading && (
-              <div className="bg-gray-300 animate-pulse flex mx-4 p-4 rounded-xl">
-                {/* image skeletion */}
-                <div className="size-[80px] md:size-[100px] 2xl:size-[120px] rounded-2xl bg-gray-400 " />
-                {/* text skeletion */}
-                <div>
-                  <div className="h-6 w-[200px] bg-gray-400 m-2 rounded-xl" />
-                  <div className="h-6 w-[100px] bg-gray-400 m-2 rounded-xl" />
-                </div>
-              </div>
-            )}
+            {isLoading && <MenuLoadingSkeleton />}
 
             {/* bottom observer */}
             <div ref={observerBottomRef} className="h-[20px]" />
           </div>
         </>
       ) : (
-        <>No data</>
+        // loading skeleton
+        <RestaurantSkeleton />
       )}
     </div>
   );
