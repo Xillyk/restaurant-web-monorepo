@@ -45,7 +45,7 @@ router.get("/info/:id", async (req: Request, res: Response) => {
         ...responseData,
       });
     } catch (error) {
-      res.status(500).send({ message: "target api response with 500 status" });
+      res.status(500).send({ message: `target api response with error` });
     }
   } else {
     res.status(400).send({ message: "restaurantId is required" });
@@ -68,7 +68,7 @@ router.get("/full-menu", async (req: Request, res: Response) => {
         ...menuData,
       });
     } catch (error) {
-      res.status(500).send({ message: "target api response with 500 status" });
+      res.status(500).send({ message: `target api response with error` });
     }
   } else {
     res.status(400).send({ message: "restaurantId | menuId is required" });
