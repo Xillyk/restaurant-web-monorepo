@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import BottomSheetSkeleton from "./skeleton/BottomSheetSkeleton";
 import CheckBox from "./common/CheckBox";
+import TextInput from "./common/TextInput";
 
 import { useRestaurant } from "@/contexts/RestaurantContext";
 
@@ -11,7 +12,7 @@ import { IFullMenu, IRestaurantInfo, IShortMenu } from "../../../types";
 
 import { IoMdClose } from "react-icons/io";
 import { IoBagCheckOutline } from "react-icons/io5";
-import TextInput from "./common/TextInput";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ interface BottomSheetProps {
 
 const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
   const { selectedMenuId, selectedRestaurantId } = useRestaurant();
+  const windowSize = useWindowSize();
 
   const [menuInfo, setMenuInfo] = useState<IFullMenu>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,6 +41,15 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
 
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
+
+  const calculateOptionHeight = useCallback(() => {
+    if (windowSize[1] > 1200) {
+      return windowSize[1] * 0.5;
+    } else if (windowSize[1] > 800) {
+      return windowSize[1] * 0.2;
+    }
+    return windowSize[1] * 0.1;
+  }, [windowSize]);
 
   const fetchFullMenu = async (
     restaurantId: IRestaurantInfo["id"],
@@ -86,7 +97,7 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
               <>
                 {/* header */}
                 <div className="py-3">
-                  <h2 className="text-2xl font-normal text-center">
+                  <h2 className="text-xl md:text-2xl font-normal text-center line-clamp-1 max-w-[80%] sm:max-w-[90%] mx-auto">
                     {menuInfo.name}
                   </h2>
 
@@ -99,7 +110,7 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                   </div>
                 </div>
 
-                <div className="w-full aspect-[16/9] overflow-hidden relative">
+                <div className="w-full aspect-[16/9] md:aspect-[16/6] lg:aspect-[16/6] overflow-hidden relative">
                   <img
                     src={menuInfo.largeImage}
                     alt={menuInfo.name}
@@ -133,27 +144,33 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                       <span className="text-gray-400 text-lg">
                         ตัวเลือกเพิ่มเติม
                       </span>
-                      {menuInfo.options.map((option, optionIndex) => (
-                        <div key={optionIndex} className="mt-2">
-                          <span className="text-lg">{option.label}</span>
 
-                          {/* choices */}
-                          {option.choices.map((choice, choiceIndex) => (
-                            <div
-                              className="flex items-center gap-2 mt-1"
-                              key={choiceIndex}
-                            >
-                              <CheckBox />
-                              <span className="w-[150px] text-md">
-                                {choice.label}
-                              </span>
-                              <span className="text-red-500 text-sm">
-                                (หมด)
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
+                      <div
+                        className="h-full overflow-y-auto"
+                        style={{
+                          height: calculateOptionHeight(),
+                        }}
+                      >
+                        {menuInfo.options.map((option, optionIndex) => (
+                          <div key={optionIndex} className="mt-4">
+                            <span className="text-lg">{option.label}</span>
+
+                            {/* choices */}
+                            {option.choices.map((choice, choiceIndex) => (
+                              <div
+                                className="flex items-center gap-2 mt-1"
+                                key={choiceIndex}
+                              >
+                                <CheckBox />
+                                <span className="text-md">{choice.label}</span>
+                                <span className="text-red-500 text-sm">
+                                  (หมด)
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ) : (
                     <span className="text-gray-400 text-sm">
