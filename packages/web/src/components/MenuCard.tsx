@@ -25,7 +25,7 @@ const MenuCard = ({ menu }: MenuCardProps) => {
 
   return (
     <div
-      className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-full flex gap-4 cursor-pointer"
+      className="h-[100px] md:h-[120px] 2xl:h-[140px] rounded-2xl w-2xs sm:w-xs md:w-lg lg:w-xl flex gap-4 cursor-pointer"
       onClick={() => handleClickMenu()}
     >
       <img
@@ -34,9 +34,16 @@ const MenuCard = ({ menu }: MenuCardProps) => {
         className="size-[80px] md:size-[100px] 2xl:size-[120px] rounded-2xl"
       />
 
-      <div className="flex flex-col">
-        <span className="text-md md:text-xl font-semibold">{menu.name}</span>
-        <span className="text-sm md:text-lg font-medium">{`${menu.fullPrice} บาท`}</span>
+      <div className="flex flex-col gap-1">
+        <span className="text-md md:text-xl font-semibold line-clamp-2">
+          {menu.name}
+        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm md:text-xl font-medium">{`${menu.fullPrice}`}</span>
+          <span className="text-sm md:text-lg font-normal text-gray-600">
+            บาท
+          </span>
+        </div>
       </div>
     </div>
   );
