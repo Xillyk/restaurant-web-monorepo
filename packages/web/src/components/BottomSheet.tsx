@@ -10,9 +10,13 @@ import { getFullMenu } from "@/services/restaurantService";
 
 import { IFullMenu, IRestaurantInfo, IShortMenu } from "../../../types";
 
+import { useWindowSize } from "@/hooks/useWindowSize";
+
+import { getMenuPrice } from "@/utils/calculatePrice";
+import { checkIsInDiscountPeriod } from "@/utils/timeCheck";
+
 import { IoMdClose } from "react-icons/io";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -122,9 +126,35 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                   {/* header */}
                   <div className="flex justify-between">
                     {/* price */}
-                    <span className="text-3xl">
-                      ราคา {menuInfo.fullPrice} บาท
-                    </span>
+                    <div className="flex items-center gap-2 text-xl">
+                      <span>ราคา</span>
+                      {menuInfo.discountedPercent > 0 &&
+                      checkIsInDiscountPeriod(menuInfo.discountedTimePeriod) ? (
+                        <div className="text-3xl font-medium flex gap-2 items-center">
+                          <span
+                            className={`${
+                              checkIsInDiscountPeriod(
+                                menuInfo.discountedTimePeriod
+                              ) && "line-through decoration-2 text-red-500"
+                            } text-xs md:text-lg`}
+                          >
+                            {menuInfo.fullPrice}
+                          </span>
+
+                          <span className="text-green-600">
+                            {getMenuPrice(menuInfo)}
+                          </span>
+                        </div>
+                      ) : (
+                        // no discount -> show full price
+                        <span
+                          className={`text-sm md:text-xl font-medium text-gray-700`}
+                        >
+                          {getMenuPrice(menuInfo)}
+                        </span>
+                      )}
+                      <span className="">บาท</span>
+                    </div>
 
                     {/* total sell */}
                     {menuInfo.sold > 0 && (

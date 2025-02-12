@@ -1,7 +1,12 @@
 import React, { useMemo } from "react";
-import { IShortMenu } from "../../../types";
+
 import { useRestaurant } from "@/contexts/RestaurantContext";
 import { useBottomSheet } from "@/contexts/BottomSheetContext";
+
+import { getMenuPrice } from "@/utils/calculatePrice";
+import { checkIsInDiscountPeriod } from "@/utils/timeCheck";
+
+import { IShortMenu } from "../../../types";
 
 import NoImage from "@/assets/no-image.jpg";
 
@@ -39,7 +44,24 @@ const MenuCard = ({ menu }: MenuCardProps) => {
           {menu.name}
         </span>
         <div className="flex items-center gap-2">
-          <span className="text-sm md:text-xl font-medium">{`${menu.fullPrice}`}</span>
+          {menu.discountedPercent > 0 &&
+          checkIsInDiscountPeriod(menu.discountedTimePeriod) ? (
+            <div className="text-sm md:text-xl font-medium flex gap-2 items-center">
+              <span
+                className={`${"line-through decoration-2 text-red-500"} text-xs md:text-lg`}
+              >
+                {menu.fullPrice}
+              </span>
+
+              <span className="text-green-600">{getMenuPrice(menu)}</span>
+            </div>
+          ) : (
+            // no discount -> show full price
+            <span className={`text-sm md:text-xl font-medium text-gray-700`}>
+              {getMenuPrice(menu)}
+            </span>
+          )}
+
           <span className="text-sm md:text-lg font-normal text-gray-600">
             บาท
           </span>
