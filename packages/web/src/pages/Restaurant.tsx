@@ -59,7 +59,11 @@ const Restaurant = () => {
     if (!hasMore || isLoadingAllMenus) return;
 
     setIsLoadingAllMenus(true);
-    const data = await getRestaurantInfoAndMenus(restaurantId ?? "", page, 10);
+    const data = await getRestaurantInfoAndMenus(
+      parseInt(restaurantId ?? ""),
+      page,
+      10
+    );
 
     if (data) {
       setRestaurantInfo(data.info);
