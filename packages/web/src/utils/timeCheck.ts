@@ -1,4 +1,4 @@
-import { IRestaurantInfo } from "../../../types";
+import { IFullMenu, IRestaurantInfo, IShortMenu } from "../../../types";
 
 // is in open time range
 export const checkIsRestaurantOpen = (
@@ -25,4 +25,25 @@ export const checkIsRestaurantOpen = (
     currentTimeInMinutes >= openTimeInMinutes &&
     currentTimeInMinutes <= closeTimeInMinutes
   );
+};
+
+export const checkIsInDiscountPeriod = (
+  discountedTimePeriod:
+    | IShortMenu["discountedTimePeriod"]
+    | IFullMenu["discountedTimePeriod"]
+) => {
+  if (!discountedTimePeriod) return false;
+
+  const now = new Date();
+  const currentTime = now.getHours() * 60 + now.getMinutes();
+
+  const [beginHour, beginMinute] = discountedTimePeriod.begin
+    .split(":")
+    .map(Number);
+  const [endHour, endMinute] = discountedTimePeriod.end.split(":").map(Number);
+
+  const beginTime = beginHour * 60 + beginMinute;
+  const endTime = endHour * 60 + endMinute;
+
+  return currentTime >= beginTime && currentTime <= endTime;
 };
