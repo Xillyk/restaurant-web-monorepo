@@ -14,7 +14,10 @@ import { IShortMenu } from "../../../types";
 import { useRestaurant } from "@/contexts/RestaurantContext";
 import { useBottomSheet } from "@/contexts/BottomSheetContext";
 
-import { getRestaurantInfoAndMenus } from "@/services/restaurantService";
+import {
+  getRestaurantInfoAndMenus,
+  getTopRecommendMenus,
+} from "@/services/restaurantService";
 
 import { checkIsRestaurantOpen } from "@/utils/timeCheck";
 
@@ -31,18 +34,31 @@ const Restaurant = () => {
   const { isOpenBottomSheet, setIsOpenBottomSheet } = useBottomSheet();
 
   const [menus, setMenus] = useState<IShortMenu[]>([]);
+  const [topMenus, setTopMenus] = useState<IShortMenu[]>([]);
   const [isRestaurantOpen, setIsRestaurantOpen] = useState<boolean>(false);
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
+  const [isLoadingPopularMenus, setIsLoadingPopularMenus] =
+    useState<boolean>(false);
+  const [isLoadingAllMenus, setIsLoadingAllMenus] = useState<boolean>(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   const observerBottomRef = useRef<HTMLDivElement | null>(null);
 
-  const fetchData = useCallback(async () => {
-    if (!hasMore || isLoading) return;
+  const fetchPopularMenus = useCallback(async () => {
+    setIsLoadingPopularMenus(true);
+    const data = await getTopRecommendMenus(parseInt(restaurantId ?? ""), 3);
 
-    setIsLoading(true);
+    if (data) {
+      setTopMenus(data);
+    }
+    setIsLoadingPopularMenus(false);
+  }, [restaurantId]);
+
+  const fetchMenus = useCallback(async () => {
+    if (!hasMore || isLoadingAllMenus) return;
+
+    setIsLoadingAllMenus(true);
     const data = await getRestaurantInfoAndMenus(restaurantId ?? "", page, 10);
 
     if (data) {
@@ -52,13 +68,19 @@ const Restaurant = () => {
       setHasMore(data.hasMore);
       setPage((prev) => prev + 1);
     }
-    setIsLoading(false);
-  }, [page, hasMore, isLoading, setRestaurantInfo, restaurantId]);
+    setIsLoadingAllMenus(false);
+  }, [page, hasMore, isLoadingAllMenus, setRestaurantInfo, restaurantId]);
 
   useEffect(() => {
-    fetchData();
+    fetchMenus();
     setSelectedRestaurantId(parseInt(restaurantId as string));
     setSelectedMenuId(undefined);
+
+    if (isFirstLoad) {
+      fetchPopularMenus();
+    } else {
+      setIsFirstLoad(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -67,7 +89,7 @@ const Restaurant = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore) {
-          fetchData();
+          fetchMenus();
         }
       },
       { threshold: 1.0 }
@@ -76,7 +98,7 @@ const Restaurant = () => {
     if (observerBottomRef.current) observer.observe(observerBottomRef.current);
 
     return () => observer.disconnect();
-  }, [fetchData, hasMore]);
+  }, [fetchMenus, hasMore]);
 
   return (
     <div className="h-screen overflow-auto">
@@ -110,9 +132,28 @@ const Restaurant = () => {
               <OpenStatus isOpen={isRestaurantOpen} />
             </div>
 
+            {/* popular list */}
+            <div className="mt-8 flex flex-col gap-2 w-fit">
+              <div className="flex items-center gap-2">
+                <span className="text-xl text-orange-600">รายการแนะนำ</span>
+                {/* <span className="text-orange-600 text-xl">ขายดี</span> */}
+              </div>
+
+              {isLoadingPopularMenus ? (
+                <>
+                  <MenuLoadingSkeleton />
+                </>
+              ) : (
+                <MenuList menuList={topMenus} />
+              )}
+            </div>
+
             {/* menu list */}
             <div className="mt-8">
-              <MenuList menuList={menus} />
+              <span className="text-xl">เมนูทั้งหมด</span>
+              <div className="mt-2">
+                <MenuList menuList={menus} />
+              </div>
             </div>
 
             <BottomSheet
@@ -120,7 +161,7 @@ const Restaurant = () => {
               onClose={() => setIsOpenBottomSheet(false)}
             />
 
-            {isLoading && <MenuLoadingSkeleton />}
+            {isLoadingAllMenus && <MenuLoadingSkeleton />}
 
             {/* bottom observer */}
             <div ref={observerBottomRef} className="h-[20px]" />
