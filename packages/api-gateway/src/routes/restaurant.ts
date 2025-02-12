@@ -40,7 +40,7 @@ router.get("/info/:id", async (req: Request, res: Response) => {
       // no need to send now
       restaurantInfo.menus = [];
 
-      // ?: set discount, and period
+      // ?: set menu discount, and period
       const editedMenuData = data.map((menu) => ({
         ...menu,
         discountedPercent: 10,
@@ -49,6 +49,12 @@ router.get("/info/:id", async (req: Request, res: Response) => {
           end: "19:00",
         },
       }));
+
+      // ?: set restaurant open, close time
+      restaurantInfo.activeTimePeriod = {
+        open: "16:00",
+        close: "18:00",
+      };
 
       const responseData: IRestaurantInfoAndMenusPagination = {
         info: restaurantInfo,
