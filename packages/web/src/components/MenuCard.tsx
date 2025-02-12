@@ -46,7 +46,7 @@ const MenuCard = ({ menu }: MenuCardProps) => {
         <div className="flex items-center gap-2">
           {menu.discountedPercent > 0 &&
           checkIsInDiscountPeriod(menu.discountedTimePeriod) ? (
-            <div className="text-sm md:text-xl font-medium flex gap-2 items-center">
+            <div className="text-lg md:text-xl font-medium flex gap-2 items-center">
               <span
                 className={`${"line-through decoration-2 text-red-500"} text-xs md:text-lg`}
               >
