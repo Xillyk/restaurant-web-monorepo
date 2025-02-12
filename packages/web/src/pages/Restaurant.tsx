@@ -134,24 +134,31 @@ const Restaurant = () => {
 
             {/* popular list */}
             <div className="mt-8 flex flex-col gap-2 w-fit">
-              <div className="flex items-center gap-2">
-                <span className="text-xl text-orange-600">รายการแนะนำ</span>
-                {/* <span className="text-orange-600 text-xl">ขายดี</span> */}
-              </div>
+              <span className="text-xl text-orange-600">รายการแนะนำ</span>
 
               {isLoadingPopularMenus ? (
                 <>
                   <MenuLoadingSkeleton />
                 </>
               ) : (
-                <MenuList menuList={topMenus} />
+                <div
+                  className={`${
+                    !isRestaurantOpen && "opacity-50 pointer-events-none"
+                  }`}
+                >
+                  <MenuList menuList={topMenus} />
+                </div>
               )}
             </div>
 
             {/* menu list */}
             <div className="mt-8">
               <span className="text-xl">เมนูทั้งหมด</span>
-              <div className="mt-2">
+              <div
+                className={`mt-2 ${
+                  !isRestaurantOpen && "opacity-50 pointer-events-none"
+                }`}
+              >
                 <MenuList menuList={menus} />
               </div>
             </div>
