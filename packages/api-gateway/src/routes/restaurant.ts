@@ -75,4 +75,34 @@ router.get("/full-menu", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/top-menu", async (req: Request, res: Response) => {
+  const restaurantId = req.query.restaurantId as string;
+  const limit = parseInt(req.query.limit as string) || 3;
+
+  if (restaurantId) {
+    try {
+      // * 1 fetch restaurant info
+      const restaurantResponse = await fetch(
+        `${API}/restaurants/${restaurantId}.json`
+      );
+      const restaurantInfo =
+        (await restaurantResponse.json()) as IRestaurantInfo;
+
+      // * 2 fetch all menus
+      const menus = await fetchAllMenus(restaurantId, restaurantInfo.menus, 20);
+
+      // * sort top sold menus
+      const filterPopularMenus = menus
+        .sort((a, b) => b.sold - a.sold)
+        .slice(0, limit);
+
+      res.status(200).send(filterPopularMenus);
+    } catch (error) {
+      res.status(500).send({ message: `target api response with error` });
+    }
+  } else {
+    res.status(400).send({ message: "restaurantId is required" });
+  }
+});
+
 export default router;
