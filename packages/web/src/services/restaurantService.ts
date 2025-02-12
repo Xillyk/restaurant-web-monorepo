@@ -38,3 +38,19 @@ export const getFullMenu = async (
     console.log("🚀 ~ getFullMenu ~ error:", error);
   }
 };
+
+// get top recommend menus
+export const getTopRecommendMenus = async (
+  restaurantId: IRestaurantInfo["id"],
+  limit: number
+) => {
+  try {
+    const response = await fetch(
+      `${API_GATEWAY_ENDPOINT}/restaurant/top-menu?restaurantId=${restaurantId}&limit=${limit}`
+    );
+    const data: IShortMenu[] = await response.json();
+    return data;
+  } catch (error) {
+    console.log("🚀 ~ getFullMenu ~ error:", error);
+  }
+};
