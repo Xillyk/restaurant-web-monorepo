@@ -8,7 +8,7 @@ import {
 const API_GATEWAY_ENDPOINT = import.meta.env.VITE_API_GATEWAY_ENDPOINT;
 // get restaurant info
 export const getRestaurantInfoAndMenus = async (
-  restaurantId: string,
+  restaurantId: number,
   page: number,
   limit: number
 ) => {
