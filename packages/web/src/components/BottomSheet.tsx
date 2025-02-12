@@ -130,13 +130,13 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                       <span>ราคา</span>
                       {menuInfo.discountedPercent > 0 &&
                       checkIsInDiscountPeriod(menuInfo.discountedTimePeriod) ? (
-                        <div className="text-3xl font-medium flex gap-2 items-center">
+                        <div className="text-2xl font-medium flex gap-2 items-center">
                           <span
                             className={`${
                               checkIsInDiscountPeriod(
                                 menuInfo.discountedTimePeriod
                               ) && "line-through decoration-2 text-red-500"
-                            } text-xs md:text-lg`}
+                            } text-sm md:text-lg`}
                           >
                             {menuInfo.fullPrice}
                           </span>
@@ -148,7 +148,7 @@ const BottomSheet = ({ isOpen, onClose }: BottomSheetProps) => {
                       ) : (
                         // no discount -> show full price
                         <span
-                          className={`text-sm md:text-xl font-medium text-gray-700`}
+                          className={`text-md md:text-xl font-medium text-gray-700`}
                         >
                           {getMenuPrice(menuInfo)}
                         </span>
