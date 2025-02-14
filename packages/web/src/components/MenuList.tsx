@@ -4,13 +4,14 @@ import MenuCard from "./MenuCard";
 
 interface MenuListProps {
   menuList: IShortMenu[];
+  isRecommendList?: boolean;
 }
 
-const MenuList = ({ menuList }: MenuListProps) => {
+const MenuList = ({ menuList, isRecommendList }: MenuListProps) => {
   return (
     <div>
       {menuList.map((menu, index) => (
-        <MenuCard menu={menu} key={index} />
+        <MenuCard menu={menu} key={index} isRecommendList={isRecommendList} />
       ))}
     </div>
   );

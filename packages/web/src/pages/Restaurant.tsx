@@ -150,7 +150,7 @@ const Restaurant = () => {
                     !isRestaurantOpen && "opacity-50 pointer-events-none"
                   }`}
                 >
-                  <MenuList menuList={topMenus} />
+                  <MenuList menuList={topMenus} isRecommendList={true} />
                 </div>
               )}
             </div>
