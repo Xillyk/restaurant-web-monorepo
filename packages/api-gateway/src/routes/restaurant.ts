@@ -9,6 +9,11 @@ import {
 } from "../../../types/index.ts";
 
 const API = process.env.LINEMAN_API_GATEWAY;
+// * for test
+const RESTAURANT_OPEN_TIME = process.env.RESTAURANT_OPEN_TIME;
+const RESTAURANT_CLOSE_TIME = process.env.RESTAURANT_CLOSE_TIME;
+const DISCOUNT_BEGIN_TIME = process.env.DISCOUNT_BEGIN_TIME;
+const DISCOUNT_END_TIME = process.env.DISCOUNT_END_TIME;
 
 const router = Router();
 
@@ -45,15 +50,15 @@ router.get("/info/:id", async (req: Request, res: Response) => {
         ...menu,
         discountedPercent: 10,
         discountedTimePeriod: {
-          begin: "16:00",
-          end: "19:00",
+          begin: DISCOUNT_BEGIN_TIME ?? "00:00",
+          end: DISCOUNT_END_TIME ?? "00:00",
         },
       }));
 
       // ?: set restaurant open, close time
       restaurantInfo.activeTimePeriod = {
-        open: "16:00",
-        close: "18:00",
+        open: RESTAURANT_OPEN_TIME ?? "00:00",
+        close: RESTAURANT_CLOSE_TIME ?? "00:00",
       };
 
       const responseData: IRestaurantInfoAndMenusPagination = {
@@ -90,8 +95,8 @@ router.get("/full-menu", async (req: Request, res: Response) => {
         ...menuData,
         discountedPercent: 10,
         discountedTimePeriod: {
-          begin: "16:00",
-          end: "19:00",
+          begin: DISCOUNT_BEGIN_TIME ?? "00:00",
+          end: DISCOUNT_END_TIME ?? "00:00",
         },
       };
 
@@ -122,9 +127,6 @@ router.get("/top-menu", async (req: Request, res: Response) => {
       // * 2 fetch all menus
       const menus = await fetchAllMenus(restaurantId, restaurantInfo.menus, 20);
 
-      // menus.forEach((menu) => console.log(menu.discountedTimePeriod));
-      // console.log("🚀 ~ router.get ~ t:", t);
-
       // * sort top sold menus
       const filterPopularMenus = menus
         .sort((a, b) => b.sold - a.sold)
@@ -135,8 +137,8 @@ router.get("/top-menu", async (req: Request, res: Response) => {
         ...menu,
         discountedPercent: 10,
         discountedTimePeriod: {
-          begin: "16:00",
-          end: "19:00",
+          begin: DISCOUNT_BEGIN_TIME ?? "00:00",
+          end: DISCOUNT_END_TIME ?? "00:00",
         },
       }));
 
