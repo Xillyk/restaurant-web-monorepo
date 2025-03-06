@@ -30,7 +30,7 @@ router.get("/info/:id", async (req: Request, res: Response) => {
     try {
       // * 1 fetch restaurant info
       const restaurantResponse = await fetch(
-        `${API}/restaurants/${restaurantId}.json`
+        `${API}/restaurants/${restaurantId}.json`,
       );
       const restaurantInfo =
         (await restaurantResponse.json()) as IRestaurantInfo;
@@ -86,7 +86,7 @@ router.get("/full-menu", async (req: Request, res: Response) => {
     try {
       // * 1 fetch restaurant info
       const menuResponse = await fetch(
-        `${API}/restaurants/${restaurantId}/menus/${menuId}/full.json`
+        `${API}/restaurants/${restaurantId}/menus/${menuId}/full.json`,
       );
       const menuData = (await menuResponse.json()) as IFullMenu;
 
@@ -119,7 +119,7 @@ router.get("/top-menu", async (req: Request, res: Response) => {
     try {
       // * 1 fetch restaurant info
       const restaurantResponse = await fetch(
-        `${API}/restaurants/${restaurantId}.json`
+        `${API}/restaurants/${restaurantId}.json`,
       );
       const restaurantInfo =
         (await restaurantResponse.json()) as IRestaurantInfo;

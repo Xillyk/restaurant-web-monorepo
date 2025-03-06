@@ -5,11 +5,11 @@ const API = process.env.LINEMAN_API_GATEWAY;
 
 export const fetchMenu = async (
   restaurantId: string,
-  menuName: string
+  menuName: string,
 ): Promise<IShortMenu | null> => {
   try {
     const response = await fetch(
-      `${API}/restaurants/${restaurantId}/menus/${menuName}/short.json`
+      `${API}/restaurants/${restaurantId}/menus/${menuName}/short.json`,
     );
 
     if (response.status !== 200)
@@ -26,12 +26,12 @@ export const fetchMenu = async (
 export const fetchAllMenus = async (
   restaurantId: string,
   menuNames: string[],
-  concurrencyLimit: number = 10
+  concurrencyLimit: number = 10,
 ) => {
   const limit = pLimit(concurrencyLimit);
 
   const fetchPromises = menuNames.map((menuName) =>
-    limit(() => fetchMenu(restaurantId, menuName))
+    limit(() => fetchMenu(restaurantId, menuName)),
   );
 
   const results = await Promise.all(fetchPromises);

@@ -11,13 +11,13 @@ dotenv.config();
 app.use(
   cors({
     origin: ["http://localhost:5173"],
-  })
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) =>
-  res.send({ data: "LINE MAN Wongnai Frontend Assignment" })
+  res.send({ data: "LINE MAN Wongnai Frontend Assignment" }),
 );
 
 app.use("/restaurant", restaurantRoute);

@@ -2,7 +2,7 @@ import { IFullMenu, IRestaurantInfo, IShortMenu } from "../../../types";
 
 // is in open time range
 export const checkIsRestaurantOpen = (
-  activeTimePeriod: IRestaurantInfo["activeTimePeriod"]
+  activeTimePeriod: IRestaurantInfo["activeTimePeriod"],
 ) => {
   const now = new Date();
   const currentHours = now.getHours();
@@ -30,7 +30,7 @@ export const checkIsRestaurantOpen = (
 export const checkIsInDiscountPeriod = (
   discountedTimePeriod:
     | IShortMenu["discountedTimePeriod"]
-    | IFullMenu["discountedTimePeriod"]
+    | IFullMenu["discountedTimePeriod"],
 ) => {
   if (!discountedTimePeriod) return false;
 
