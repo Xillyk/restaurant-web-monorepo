@@ -1,6 +1,6 @@
 # Frontend Assignment 2023
 
-## "What to Order" Assignment 
+## "What to Order" Assignment
 
 ### Task 1 API Gateway
 
@@ -15,7 +15,6 @@ In this task, you have to develop an API Gateway to retrieve data from the provi
 - [/] Create various endpoints and send data back so that the web can be displayed according to the design that is defined correctly.
 
 - [ ] Write a unit test for each endpoint created and ensures that each endpoint is always available and working properly
-
 
 #### Extra Requirements
 
@@ -38,13 +37,13 @@ In this task, you have to develop an API Gateway to retrieve data from the provi
 }
 ```
 
-| Field | Description |
-| ------ | ------ |
-| name | Restaurant Name |
-| id | Restaurant ID |
-| coverImage | Restaurant Cover Photo |
-| menus | Restaurant Menus |
-| activeTimePeriod.open | Restaurant Opening Hour |
+| Field                  | Description             |
+| ---------------------- | ----------------------- |
+| name                   | Restaurant Name         |
+| id                     | Restaurant ID           |
+| coverImage             | Restaurant Cover Photo  |
+| menus                  | Restaurant Menus        |
+| activeTimePeriod.open  | Restaurant Opening Hour |
 | activeTimePeriod.close | Restaurant Closing Hour |
 
 - Short Menu `https://us-central1-wongnai-frontend-assignment.cloudfunctions.net/api/restaurants/:restaurantId/menus/:menuName/short.json`
@@ -65,17 +64,17 @@ In this task, you have to develop an API Gateway to retrieve data from the provi
 }
 ```
 
-| Field | Description |
-| ------ | ------ |
-| name | Menu |
-| id | Menu ID |
-| thumbnailImage | Menu Cover Photo |
-| fullPrice | Menu Price |
-| discountedPercent | Menu Discount Percentage |
-| discountedTimePeriod.begin | Discount Starting Time |
-| discountedTimePeriod.end | Discount Ending Time |
-| sold | Number of Menu Sold |
-| totalInStock | Number of Menu Total Stock |
+| Field                      | Description                |
+| -------------------------- | -------------------------- |
+| name                       | Menu                       |
+| id                         | Menu ID                    |
+| thumbnailImage             | Menu Cover Photo           |
+| fullPrice                  | Menu Price                 |
+| discountedPercent          | Menu Discount Percentage   |
+| discountedTimePeriod.begin | Discount Starting Time     |
+| discountedTimePeriod.end   | Discount Ending Time       |
+| sold                       | Number of Menu Sold        |
+| totalInStock               | Number of Menu Total Stock |
 
 - Full Menu `https://us-central1-wongnai-frontend-assignment.cloudfunctions.net/api/restaurants/:restaurantId/menus/:menuName/full.json`
 
@@ -102,20 +101,20 @@ In this task, you have to develop an API Gateway to retrieve data from the provi
 }
 ```
 
-| Field | Description |
-| ------ | ------ |
-| name | Menu |
-| id | Menu ID |
-| thumbnailImage | Menu Cover Photo |
-| fullPrice | Menu Price |
-| discountedPercent | Menu Discount Percentage |
-| discountedTimePeriod.begin | Discount Starting Time |
-| discountedTimePeriod.end | Discount Ending Time |
-| sold | Number of Menu Sold |
-| totalInStock | Number of Menu Total Stock |
-| largeImage | Large Menu Photo |
-| options[].label | Header Section of Menu Options Ex. Choose the type of meat |
-| options[].choices[].label | Choice of Menu Options Ex. Pork, Chicken |
+| Field                      | Description                                                |
+| -------------------------- | ---------------------------------------------------------- |
+| name                       | Menu                                                       |
+| id                         | Menu ID                                                    |
+| thumbnailImage             | Menu Cover Photo                                           |
+| fullPrice                  | Menu Price                                                 |
+| discountedPercent          | Menu Discount Percentage                                   |
+| discountedTimePeriod.begin | Discount Starting Time                                     |
+| discountedTimePeriod.end   | Discount Ending Time                                       |
+| sold                       | Number of Menu Sold                                        |
+| totalInStock               | Number of Menu Total Stock                                 |
+| largeImage                 | Large Menu Photo                                           |
+| options[].label            | Header Section of Menu Options Ex. Choose the type of meat |
+| options[].choices[].label  | Choice of Menu Options Ex. Pork, Chicken                   |
 
 We have prepared an API Server, https://us-central1-wongnai-frontend-assignment.cloudfunctions.net/api, for your API Gateway to be developed.
 
@@ -168,22 +167,23 @@ This is the part that if we do, it will help the UX even better.
 - [/] Good Developer Experience, Is the written code difficult to develop in the future?
 - [/] Website performance
 - [/] Website has good UX/UI, and users can use the website smoothly.
- 
-###  Run project
+
+### Run project
 
 We have already an initial project for API Gateway and Web application. You have to develop both API Gateway and Web application based on all the tasks mentioned above. We will run the project you submitted by using this script, please make sure this script can run both projects at the root folder correctly.
 
 1. install all dependencies
+
 ```
 yarn
 ```
 
 2. run web and API Gateway in parallel
+
 ```
 npx lerna run dev --parallel
 ```
+
 ### Assignment Period
+
 Please complete this assignment within 5 days ater the time this email has been sent.
-
-
-
